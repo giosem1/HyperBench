@@ -1,0 +1,15 @@
+[build-system]
+requires = [
+    "setuptools>=42"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hypernegative"
+version = "0.1"
+authors = [
+    {name = "Giovanni Semioli", email = "g.semioli1@studenti.unisa.it"}
+]
+readme = "README.md"
+
+
