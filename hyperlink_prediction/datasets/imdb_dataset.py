@@ -1,7 +1,7 @@
 import torch
 import pickle
 from abc import ABC
-from datasets.dataset_hypergraph import DatasetHyperGraph
+from hyperlink_prediction.datasets.dataset_hypergraph import DatasetHyperGraph
 from torch_geometric.data.hypergraph_data import HyperGraphData
 
 

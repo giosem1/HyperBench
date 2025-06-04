@@ -2,7 +2,7 @@ import gdown
 import tarfile
 import torch
 import torch.nn.functional as F
-from datasets.dataset_hypergraph import DatasetHyperGraph
+from hyperlink_prediction.datasets.dataset_hypergraph import DatasetHyperGraph
 from torch_geometric.data.hypergraph_data import HyperGraphData
 from os import remove, listdir
 
