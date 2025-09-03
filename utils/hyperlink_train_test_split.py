@@ -3,7 +3,7 @@ from torch_geometric.data import InMemoryDataset
 from torch_geometric.data.hypergraph_data import HyperGraphData
 
 class SplitDataset(InMemoryDataset):
-
+    """ A class that split the dataset in train and test."""
     def __getitem__(self, idx) -> HyperGraphData:
         if isinstance(idx, int):
             idx = torch.tensor([idx])
@@ -29,6 +29,7 @@ def train_test_split(dataset: InMemoryDataset, test_size: float = 0.2):
     train_data = dataset[train_indices]
 
     class TrainDataset(SplitDataset):
+        """The class of the Train Dataset"""
         def __init__(self):
             super().__init__()
             self._data = train_data
@@ -36,6 +37,7 @@ def train_test_split(dataset: InMemoryDataset, test_size: float = 0.2):
     
     test_data = dataset[test_indices]
     class TestDataset(SplitDataset):
+        """The class of the Test Dataset"""
         def __init__(self):
             super().__init__()
             self._data = test_data

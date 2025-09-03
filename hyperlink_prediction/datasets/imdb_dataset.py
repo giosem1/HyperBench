@@ -6,7 +6,13 @@ from torch_geometric.data.hypergraph_data import HyperGraphData
 
 
 class CHLPBaseDataset(DatasetHyperGraph, ABC):
+    """A object that save a hypergraph dataset from Google Drive and load in memory
 
+        Args:
+            dataset_name (string): The dataset's name.
+            root (string): The root where the dataset will be saved.
+                 (default: 'datasets')
+    """
     GDRIVE_ID = None
     DATASET_NAME = None
 
@@ -33,6 +39,10 @@ class CHLPBaseDataset(DatasetHyperGraph, ABC):
         return "processed.pt"
 
     def download(self):
+        """ Take the dataset from Google Drive through the name of dataset,
+            which is associeted the key, and download it in memory in the folder
+            datasets.
+        """
         from os import listdir
         if len(listdir(self.raw_dir)) > 0:
             return
@@ -46,6 +56,11 @@ class CHLPBaseDataset(DatasetHyperGraph, ABC):
         remove(archive_file_name)
 
     def process(self):
+        """ Process the files of the verts and the simplices in a tensor containing two list
+            the first contain the nodes's id
+            and the second the index of the nodes's numbers
+            and then serialize the tensor 
+        """
         edge_index = [[], []]
         with open(self.raw_dir + "/hyperedges.txt", "r") as f:
             for i, line in enumerate(f):

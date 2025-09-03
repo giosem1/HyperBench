@@ -87,6 +87,9 @@ class ARBDataset(DatasetHyperGraph):
                                  num_edges: int,
                                  return_counts: bool = False,
                                  return_duplicates: bool = False) -> torch.Tensor:
+        """ Process the edge_index of the hypergraph and return a tensor which have
+            no repetition of the edege...
+        """
         A = torch.sparse_coo_tensor(
             indices=edge_index,
             values=torch.ones(edge_index.size(1), dtype=torch.float, device=edge_index.device),
