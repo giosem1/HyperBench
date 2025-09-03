@@ -1,6 +1,7 @@
 import torch
 from typing import List, Any
 from torch.utils.data import DataLoader
+from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
 from negative_sampling.hypergraph_negative_sampling_algorithm import HypergraphNegativeSampler, MotifHypergraphNegativeSampler
 from torch_geometric.data.hypergraph_data import HyperGraphData
 from hyperlink_prediction.datasets.dataset_hypergraph import DatasetHyperGraph
@@ -19,10 +20,10 @@ class DatasetLoader(DataLoader):
             **kwargs: Additional arguments for the class.
     """
 
-    def __init__(self, dataset: DatasetHyperGraph, negative_sampling: HypergraphNegativeSampler, batch_size: int = 1, shuffle: bool = False, **kwargs):
+    def __init__(self, dataset: DatasetHyperGraph, negative_sampling: str, num_node: int, batch_size: int = 1, shuffle: bool = False, **kwargs):
         kwargs.pop("collate_fn", None)
         
-        hypergraph_negative = negative_sampling.generate(dataset._data.edge_index)
+        hypergraph_negative = setNegativeSamplingAlgorithm(negative_sampling, num_node ).generate(dataset._data.edge_index)
         dataset.edge_index = hypergraph_negative.edge_index
 
         super().__init__(

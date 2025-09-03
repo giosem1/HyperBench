@@ -203,10 +203,10 @@ class CliqueHypergraphNegativeSampler(HypergraphNegativeSampler):
 
         A = (sparse @ sparse.T).to_dense()
 
-        unique_edges = torch.unique(edge_index[1])
         generated_hyperedges_count = 0
         generated_hyperedges = []
-        for _, in range(unique_edges.shape[0]):
+        unique_edges = torch.unique(edge_index[1])
+        for i in range(unique_edges.shape[0]):
             while True:
                 #Randomly sample an hyperedge
                 hyperedge = unique_edges[torch.randint(0, unique_edges.shape[0], (1,))]
