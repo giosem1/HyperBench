@@ -6,6 +6,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from random import randint
 from hyperlink_prediction.loader.dataloader import DatasetLoader
+from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbros
 from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
 from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
 from utils.hyperlink_train_test_split import train_test_split
@@ -17,13 +18,14 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
 
 def execute():
-    
     parser = argparse.ArgumentParser(description="Insert dataset_name, insert negative_sampling method")
     parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
-    parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use", required=True)
+    parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
+    parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommon Neighbros", required=True)
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling
+    hlp_method = args.hlp_method
 
     def sensivity_specifivity_cutoff(y_true, y_score):
         fpr, tpr, thresholds = roc_curve(y_true, y_score)
@@ -154,13 +156,17 @@ def execute():
                 torch.ones((h.edge_index[1].max() + 1, 1), device= h.x.device),
                 torch.zeros((edge_index[1].max() + 1, 1), device= h.x.device)
             ))
+            hyperlink_prediction_method = CommonNeighbros(h.x.__len__()).generate(h.edge_index)
+
+            combined_edge_index = torch.hstack([negative_test.edge_index, hyperlink_prediction_method.edge_index])
+            combined_y = torch.vstack([negative_test.y, hyperlink_prediction_method.y])
 
             h_ = HyperGraphData(
-                x = h.x,
-                edge_index= negative_test.edge_index,
-                edge_attr= torch.vstack((h.edge_attr, h.edge_attr)),
-                y = h.y,
-                num_nodes = negative_test.num_edges
+                x=h.x,
+                edge_index=combined_edge_index.to(device),
+                edge_attr=torch.vstack([h.edge_attr, h.edge_attr]),  # o personalizza se vuoi
+                y=combined_y.to(device),
+                num_nodes=h.num_nodes
             )
 
             y_train = model(h_.x, h_.edge_attr, h_.edge_index)

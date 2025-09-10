@@ -13,4 +13,5 @@ authors = [
 ]
 readme = "README.md"
 
-
+[project.scripts]
+imdb_pipeline = "pipelines.imdb_pipeline:execute"
