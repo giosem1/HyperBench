@@ -1,31 +1,32 @@
-import torch
 import argparse
-import numpy as np
-import seaborn as sns
-import torch.nn as nn
-import matplotlib.pyplot as plt
-from random import randint
-from hyperlink_prediction.loader.dataloader import DatasetLoader
-from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbros
-from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
-from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
-from utils.hyperlink_train_test_split import train_test_split
-from torch_geometric.nn import HypergraphConv
-from tqdm.auto import trange, tqdm
-from torch_geometric.data.hypergraph_data import HyperGraphData
-from torch_geometric.nn.aggr import MeanAggregation
-from torch.utils.tensorboard import SummaryWriter
-from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
-
 def execute():
     parser = argparse.ArgumentParser(description="Insert dataset_name, insert negative_sampling method")
     parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
     parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
-    parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommon Neighbros", required=True)
+    parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbros", required=True)
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling
     hlp_method = args.hlp_method
+
+    import torch
+    import numpy as np
+    import seaborn as sns
+    import torch.nn as nn
+    import matplotlib.pyplot as plt
+    from random import randint
+    from hyperlink_prediction.loader.dataloader import DatasetLoader
+    from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbros
+    from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
+    from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
+    from utils.hyperlink_train_test_split import train_test_split
+    from torch_geometric.nn import HypergraphConv
+    from tqdm.auto import trange, tqdm
+    from torch_geometric.data.hypergraph_data import HyperGraphData
+    from torch_geometric.nn.aggr import MeanAggregation
+    from torch.utils.tensorboard import SummaryWriter
+    from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
+
 
     def sensivity_specifivity_cutoff(y_true, y_score):
         fpr, tpr, thresholds = roc_curve(y_true, y_score)
@@ -50,7 +51,7 @@ def execute():
             dataset = IMDBHypergraphDataset("./data", pre_transform= pre_transform)
         case 'ARXIV':
             dataset = ARXIVHypergraphDataset("./data", pre_transform = pre_transform)
-        case 'CURSERA':
+        case 'COURSERA':
             dataset = COURSERAHypergraphDataset("./data", pre_transform = pre_transform)
 
     train_dataset, test_dataset, _, _, _, _ = train_test_split(dataset, test_size = 0.4)
@@ -150,21 +151,26 @@ def execute():
         optimizer.zero_grad()
         for i, h in tqdm(enumerate(loader), leave = False):
             h = h.to(device)
-            negative_test = setNegativeSamplingAlgorithm(negative_method,h.x.__len__()).generate(h.edge_index)
-            edge_index = h.edge_index.clone()
-            h.y = torch.vstack((
-                torch.ones((h.edge_index[1].max() + 1, 1), device= h.x.device),
-                torch.zeros((edge_index[1].max() + 1, 1), device= h.x.device)
-            ))
-            hyperlink_prediction_method = CommonNeighbros(h.x.__len__()).generate(h.edge_index)
+            negative_sampler = setNegativeSamplingAlgorithm(negative_method, h.num_nodes)
+            negative_test = negative_sampler.generate(h.edge_index)
 
-            combined_edge_index = torch.hstack([negative_test.edge_index, hyperlink_prediction_method.edge_index])
-            combined_y = torch.vstack([negative_test.y, hyperlink_prediction_method.y])
+            hlp_method = CommonNeighbros(h.num_nodes)
+            hlp_result = hlp_method.generate(negative_test.edge_index)
+
+            y_pos = torch.ones(hlp_result.edge_index.size(1), 1, device=h.x.device)
+            y_neg = torch.zeros(negative_test.edge_index.size(1), 1, device=h.x.device)
+
+            combined_edge_index = torch.hstack([hlp_result.edge_index, negative_test.edge_index])
+            combined_y = torch.vstack([y_pos, y_neg])
+
+            pos_edge_attr = torch.ones((hlp_result.edge_index.size(1), h.edge_attr.size(1)), device=h.x.device)
+            neg_edge_attr = torch.zeros((negative_test.edge_index.size(1), h.edge_attr.size(1)), device=h.x.device)
+            combined_edge_attr = torch.vstack([pos_edge_attr, neg_edge_attr])
 
             h_ = HyperGraphData(
                 x=h.x,
                 edge_index=combined_edge_index.to(device),
-                edge_attr=torch.vstack([h.edge_attr, h.edge_attr]),  # o personalizza se vuoi
+                edge_attr=combined_edge_attr,
                 y=combined_y.to(device),
                 num_nodes=h.num_nodes
             )
