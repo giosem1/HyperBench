@@ -3,7 +3,7 @@ def execute():
     parser = argparse.ArgumentParser(description="Insert dataset_name, insert negative_sampling method")
     parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
     parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
-    parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbros", required=True)
+    parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbors", required=True)
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling

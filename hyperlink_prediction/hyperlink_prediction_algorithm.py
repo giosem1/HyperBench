@@ -3,7 +3,7 @@ from torch import Tensor
 from .hyperlink_prediction_base import HypergraphSampler
 from .hyperlink_prediction_result import HyperlinkPredictionResult
 
-class CommonNeighbros(HypergraphSampler):
+class CommonNeighbors(HypergraphSampler):
 
     def score_CN(self, H, u, v):
         return torch.dot(H[u], H[v]).item()
