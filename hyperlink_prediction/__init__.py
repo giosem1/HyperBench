@@ -1,6 +1,6 @@
 import hyperlink_prediction.datasets
 from .hyperlink_prediction_base import HypergraphSampler
-from .hyperlink_prediction_algorithm import CommonNeighbros
+from .hyperlink_prediction_algorithm import CommonNeighbors
 from .hyperlink_prediction_result import HyperlinkPredictionResult
 
 __all__ = [
@@ -8,6 +8,6 @@ __all__ = [
 ]
 data_classes = [
     'HypergraphSampler',
-    'CommonNeighbros',
+    'CommonNeighbors',
     'HyperlinkPredictionResult'
 ]

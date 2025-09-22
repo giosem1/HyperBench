@@ -16,7 +16,7 @@ def execute():
     import matplotlib.pyplot as plt
     from random import randint
     from hyperlink_prediction.loader.dataloader import DatasetLoader
-    from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbros
+    from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbors
     from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
     from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
     from utils.hyperlink_train_test_split import train_test_split
@@ -154,7 +154,7 @@ def execute():
             negative_sampler = setNegativeSamplingAlgorithm(negative_method, h.num_nodes)
             negative_test = negative_sampler.generate(h.edge_index)
 
-            hlp_method = CommonNeighbros(h.num_nodes)
+            hlp_method = CommonNeighbors(h.num_nodes)
             hlp_result = hlp_method.generate(negative_test.edge_index)
 
             y_pos = torch.ones(hlp_result.edge_index.size(1), 1, device=h.x.device)
