@@ -5,7 +5,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![project_license][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![PyPI][pypi-shield]][pypi-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -159,8 +159,6 @@ Project Link: [https://github.com/hypernetwork-research-group/hypernegative](htt
 [issues-url]: https://github.com/hypernetwork-research-group/hypernegative/issues
 [license-shield]: https://img.shields.io/github/license/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
 [license-url]: https://github.com/hypernetwork-research-group/hypernegative/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: https://github.com/hypernetwork-research-group/hypernegative/blob/main/assets/images/logo_isis.png 
 [Python.js]: https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=FFD43B
 [Python-url]: https://www.python.org/
@@ -168,3 +166,5 @@ Project Link: [https://github.com/hypernetwork-research-group/hypernegative](htt
 [Pytorch-url]: https://pytorch.org/
 [PT_geom.js]: https://img.shields.io/badge/PyG-502DA7?style=for-the-badge&logo=https%3A%2F%2Fsimpleicons.org%2F%3Fmodal%3Dicon%26q%3Dpyg&logoColor=FFFFFF
 [PT_geom-url]: https://pytorch-geometric.readthedocs.io/en/latest/
+[pypi-shield]: https://img.shields.io/pypi/v/hypernegative?style=for-the-badge
+[pypi-url]: https://pypi.org/project/hypernegative/
