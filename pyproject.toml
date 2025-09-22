@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hypernegative"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
     {name = "Giovanni Semioli", email = "g.semioli1@studenti.unisa.it"}
 ]

@@ -26,10 +26,5 @@ jobs:
         run: uv python install 3.13
       - name: Build
         run: uv build
-      - name: Update version in pyproject.toml and setup.py
-        run: |
-          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
-          sed -i "s/^version = .*/version = \"$TAG_VERSION\"/" pyproject.toml
-          sed -i "s/^ *version *= *.*/version = \"$TAG_VERSION\",/" setup.py
       - name: Publish
         run: uv publish
