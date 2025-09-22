@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/hypernetwork-research-group/hypernegative">
-    <img src="https://github.com/hypernetwork-research-group/hypernegative/blob/main/assets/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/hypernetwork-research-group/hypernegative/raw/main/assets/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">HYPERNEGATIVE</h3>
@@ -159,7 +159,7 @@ Project Link: [https://github.com/hypernetwork-research-group/hypernegative](htt
 [issues-url]: https://github.com/hypernetwork-research-group/hypernegative/issues
 [license-shield]: https://img.shields.io/github/license/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
 [license-url]: https://github.com/hypernetwork-research-group/hypernegative/blob/master/LICENSE.txt
-[product-screenshot]: https://github.com/hypernetwork-research-group/hypernegative/blob/main/assets/images/logo_isis.png 
+[product-screenshot]: https://github.com/hypernetwork-research-group/hypernegative/raw/main/assets/images/logo_isis.png 
 [Python.js]: https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=FFD43B
 [Python-url]: https://www.python.org/
 [Pytorch.js]: https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=FFFFFF
