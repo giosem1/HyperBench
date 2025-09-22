@@ -10,8 +10,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="https://github.com/isislab-unisa/BasicTemplate/blob/main/images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/hypernetwork-research-group/hypernegative">
+    <img src="https://github.com/hypernetwork-research-group/hypernegative/assets/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">HYPERNEGATIVE</h3>
@@ -19,14 +19,14 @@
   <p align="center">
     A Python library for the evaluation of Hyperlink Prediction algorithms
     <br />
-    <a href="https://github.com/giosem1/hypernegative"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/hypernetwork-research-group/hypernegative"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/giosem1/hypernegative">View Demo</a>
+    <a href="https://github.com/hypernetwork-research-group/hypernegative">View Demo</a>
     &middot;
-    <a href="https://github.com/giosem1/hypernegative/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/hypernetwork-research-group/hypernegative/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/giosem1/hypernegative/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/hypernetwork-research-group/hypernegative/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -92,7 +92,7 @@ You can install Hypernegative, which requires **PyTorch** and **PyTorch Geometri
 
 You can install and use Hypernergative wich require the library PyTorch and PyG. For this, simply run
    ```sh
-   pip install git+https://github.com/giosem1/hypernegative
+   pip install hypernegative
    ```
 
 <!-- USAGE EXAMPLES -->
@@ -132,7 +132,7 @@ imdb_pipeline --dataset_name COURSERA --negative_sampling MotifHypergraphNegativ
 
 Giovanni Semioli - g.semioli1@studenti.unisa.it
 
-Project Link: [https://github.com/giosem1/hypernegative](https://github.com/giosem1/hypernegative)
+Project Link: [https://github.com/hypernetwork-research-group/hypernegative](https://github.com/hypernetwork-research-group/hypernegative)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -149,19 +149,19 @@ Project Link: [https://github.com/giosem1/hypernegative](https://github.com/gios
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/giosem1/hypernegative.svg?style=for-the-badge
-[contributors-url]: https://github.com/giosem1/hypernegative/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/giosem1/hypernegative.svg?style=for-the-badge
-[forks-url]: https://github.com/giosem1/hypernegative/network/members
-[stars-shield]: https://img.shields.io/github/stars/giosem1/hypernegative.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
+[contributors-url]: https://github.com/hypernetwork-research-group/hypernegative/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
+[forks-url]: https://github.com/hypernetwork-research-group/hypernegative/network/members
+[stars-shield]: https://img.shields.io/github/stars/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
 [stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/giosem1/hypernegative.svg?style=for-the-badge
-[issues-url]: https://github.com/giosem1/hypernegative/issues
-[license-shield]: https://img.shields.io/github/license/giosem1/hypernegative.svg?style=for-the-badge
-[license-url]: https://github.com/giosem1/hypernegative/blob/master/LICENSE.txt
+[issues-shield]: https://img.shields.io/github/issues/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
+[issues-url]: https://github.com/hypernetwork-research-group/hypernegative/issues
+[license-shield]: https://img.shields.io/github/license/hypernetwork-research-group/hypernegative.svg?style=for-the-badge
+[license-url]: https://github.com/hypernetwork-research-group/hypernegative/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: https://github.com/isislab-unisa/BasicTemplate/blob/main/images/logo_isis.png 
+[product-screenshot]: https://github.com/hypernetwork-research-group/hypernegative/images/logo_isis.png 
 [Python.js]: https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=FFD43B
 [Python-url]: https://www.python.org/
 [Pytorch.js]: https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=FFFFFF
