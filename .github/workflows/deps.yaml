@@ -36,7 +36,6 @@ jobs:
         run: pip install pip-tools
       - name: Generate minimal requirements
         run: |
-          pip install uv
-          uv pip compile --output requirements-minimal.txt uv.lock || uv pip compile --output requirements-minimal.txt pyproject.toml
+          pip-compile --generate-hashes --output-file=requirements-minimal.txt requirements.in
       - name: Display minimal requirements
         run: cat requirements-minimal.txt
