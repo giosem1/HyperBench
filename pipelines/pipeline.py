@@ -5,18 +5,20 @@ def execute():
     parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
     parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbors", required=True)
     parser.add_argument('--output_path', type=str, help="Path to save the results", default="./results")
+    parser.add_argument('--random_seed', type=int, help="Random seed for reproducibility", default=None)
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling
     hlp_method = args.hlp_method
     output_path = args.output_path
+    random_seed = args.random_seed
 
     import torch
     import numpy as np
     import seaborn as sns
     import torch.nn as nn
     import matplotlib.pyplot as plt
-    from random import randint
+    from random import randint, seed
     from hyperlink_prediction.loader.dataloader import DatasetLoader
     from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbors
     from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
@@ -29,6 +31,11 @@ def execute():
     from torch.utils.tensorboard import SummaryWriter
     from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
 
+    if random_seed is not None:
+        torch.manual_seed(random_seed)
+        np.random.seed(random_seed)
+        seed(random_seed)
+    
 
     def sensivity_specifivity_cutoff(y_true, y_score):
         fpr, tpr, thresholds = roc_curve(y_true, y_score)
@@ -56,10 +63,10 @@ def execute():
         case 'COURSERA':
             dataset = COURSERAHypergraphDataset("./data", pre_transform = pre_transform)
 
-    train_dataset, test_dataset, _, _, _, _ = train_test_split(dataset, test_size = 0.4)
+    train_dataset, test_dataset, _, _, _, _ = train_test_split(dataset, test_size = 0.2)
 
     loader = DatasetLoader(
-        dataset, 
+        train_dataset, 
         negative_method, 
         dataset._data.num_nodes,
         batch_size=4000, 
@@ -215,19 +222,4 @@ def execute():
     plt.savefig(f"{output_path}/confusion_matrix.png")
     plt.show()
 
-    negative_hypergraph = setNegativeSamplingAlgorithm(negative_method, test_dataset.x.__len__()).generate(test_dataset._data.edge_index)
-    test_dataset.y = torch.vstack((
-        torch.ones((test_dataset._data.edge_index[1].max() + 1, 1), device=test_dataset.x.device),
-        torch.zeros((test_dataset._data.edge_index[1].max() + 1, 1), device= test_dataset.x.device)
-    ))
-
-    test_dataset_ = HyperGraphData(
-        x = test_dataset.x,
-        edge_index= negative_hypergraph.edge_index,
-        edge_attr= torch.vstack((test_dataset.edge_attr, test_dataset.edge_attr)),
-        y = test_dataset.y,
-        num_nodes = negative_hypergraph.num_edges
-    )
-
-    y_test = model(test_dataset_.x.to(device), test_dataset_.edge_attr.to(device), test_dataset_.edge_index.to(device))
-    y_test = torch.sigmoid(y_test)
+    writer.close()

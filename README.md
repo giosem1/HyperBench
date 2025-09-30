@@ -128,7 +128,7 @@ pipeline --help
 ```
 Run a pipeline with a specific dataset, negative sampling strategy, and HLP method:
 ```sh
-pipeline --dataset_name COURSERA --negative_sampling MotifHypergraphNegativeSampler --hlp_method CommonNeighbors
+pipeline --dataset_name COURSERA --negative_sampling MotifHypergraphNegativeSampler --hlp_method CommonNeighbors --output_path ./results
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
