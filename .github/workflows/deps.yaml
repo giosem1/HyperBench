@@ -22,3 +22,20 @@ jobs:
         run: pip install vermin
       - name: Run Vermin to check minimum Python version
         run: vermin .
+
+  minimum-requirements:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+      - name: Install pip-tools
+        run: pip install pip-tools
+      - name: Generate minimal requirements
+        run: |
+          pip-compile --generate-hashes --output-file=requirements-minimal.txt requirements.in
+      - name: Display minimal requirements
+        run: cat requirements-minimal.txt
