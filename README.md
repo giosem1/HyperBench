@@ -86,6 +86,11 @@ Follow these steps to set up the project locally.
 
 ### Installation  
 
+Requirements:
+
+- torch>=1.13.0
+- torch-geometric>=2.6.1
+
 Hypernegative supports **Python 3.9 to 3.13**.  
 
 You can install Hypernegative, which requires **PyTorch** and **PyTorch Geometric (PyG)**, by running:  

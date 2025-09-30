@@ -3,16 +3,13 @@ name: Release
 on:
   push:
     tags:
-      # Publish on any tag starting with a `v`, e.g., v1.2.3
       - v*
 
 jobs:
   pypi:
     name: Publish to PyPI
     runs-on: ubuntu-latest
-    # Environment and permissions trusted publishing.
     environment:
-      # Create this environment in the GitHub repository under Settings -> Environments
       name: pypi
     permissions:
       id-token: write
@@ -20,11 +17,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
       - name: Install uv
         uses: astral-sh/setup-uv@v6
+
       - name: Install Python 3.13
         run: uv python install 3.13
+
+      - name: Set version from tag
+        id: set_version
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update version in pyproject.toml
+        run: |
+          sed -i.bak -E "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
+          # push changes back to the repo if needed
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github
+          git add pyproject.toml
+          git commit -m "Bump version to $VERSION" || echo "No changes to commit"
+          git push origin HEAD:main || echo "No changes to push"
+
       - name: Build
         run: uv build
+
       - name: Publish
         run: uv publish
