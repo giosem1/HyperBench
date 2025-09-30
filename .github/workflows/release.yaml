@@ -33,9 +33,8 @@ jobs:
       - name: Update version in pyproject.toml
         run: |
           sed -i.bak -E "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
-          # push changes back to the repo if needed
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github
+          git config --global user.email "github-actions[bot]@users.noreply.github"
           git add pyproject.toml
           git commit -m "Bump version to $VERSION" || echo "No changes to commit"
           git push origin HEAD:main || echo "No changes to push"
