@@ -1,6 +1,6 @@
 import pipelines
-from pipelines import imdb_pipeline
+from pipelines import pipeline
 
 __all__ = [
-    imdb_pipeline
+    pipeline
 ] 

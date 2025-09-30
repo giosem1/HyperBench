@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hypernegative"
-version = "0.1.2.1"
+version = "0.1.2.7"
 authors = [
     {name = "Giovanni Semioli", email = "g.semioli1@studenti.unisa.it"}
 ]
@@ -18,14 +18,15 @@ dependencies = [
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",
     "tensorboard>=2.20.0",
+    "torch>=2.8.0",
+    "torch-geometric>=2.6.1",
 ]
 requires-python = ">=3.13"
 
 [project.scripts]
-imdb_pipeline = "pipelines.imdb_pipeline:execute"
+pipeline = "pipelines.pipeline:execute"
 
 [project.urls]
 Homepage = "https://www.isislab.it/"
 Repository = "https://github.com/hypernetwork-research-group/hypernegative"
-# Documentation = "https://pytorch.org/docs"
 "Issue Tracker" = "https://github.com/hypernetwork-research-group/hypernegative/issues"

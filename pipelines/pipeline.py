@@ -4,10 +4,12 @@ def execute():
     parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
     parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
     parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbors", required=True)
+    parser.add_argument('--output_path', type=str, help="Path to save the results", default="./results")
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling
     hlp_method = args.hlp_method
+    output_path = args.output_path
 
     import torch
     import numpy as np
@@ -210,7 +212,7 @@ def execute():
     plt.xlabel("Predicted label")
     plt.ylabel("True label")
     plt.title("Normalized Confusion Matrix")
-
+    plt.savefig(f"{output_path}/confusion_matrix.png")
     plt.show()
 
     negative_hypergraph = setNegativeSamplingAlgorithm(negative_method, test_dataset.x.__len__()).generate(test_dataset._data.edge_index)

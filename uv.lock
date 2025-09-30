@@ -333,7 +333,7 @@ wheels = [
 
 [[package]]
 name = "hypernegative"
-version = "0.1"
+version = "0.1.2.7"
 source = { editable = "." }
 dependencies = [
     { name = "gdown" },

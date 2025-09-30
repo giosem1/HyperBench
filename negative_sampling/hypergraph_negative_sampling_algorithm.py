@@ -5,6 +5,9 @@ from torch import Tensor
 from negative_sampling.hypergraph_negative_sampling import HypergraphNegativeSampler
 from negative_sampling.hypergraph_negative_sampling_result import HypergraphNegativeSamplerResult, ABSizedHypergraphNegativeSamplerResult
 
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
+
 class ABSizedHypergraphNegativeSampler(HypergraphNegativeSampler):
     """ A class Negative Sampler which samples the negative sample using
         the alpha and beta algorithm integreted whit the Size Negative Sampling.

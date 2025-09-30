@@ -178,3 +178,9 @@ data/
 
 #Logs
 logs/
+
+#results
+results/*
+!results/.gitkeep
+
+.DS_Store
