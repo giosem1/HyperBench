@@ -18,6 +18,7 @@ def execute():
     import seaborn as sns
     import torch.nn as nn
     import matplotlib.pyplot as plt
+    import time
     from random import randint, seed
     from hyperlink_prediction.loader.dataloader import DatasetLoader
     from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbors
@@ -43,7 +44,8 @@ def execute():
 
         return thresholds[idx]
 
-    writer = SummaryWriter(f"./logs/{randint(0,10000)}")
+    now = time.strftime("%Y%m%d-%H%M%S")
+    writer = SummaryWriter(f"./logs/{now}_{dataset_name}")
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     def pre_transform(data: HyperGraphData):

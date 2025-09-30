@@ -173,14 +173,10 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-#Datasets
-data/
-
-#Logs
-logs/
-
-#results
+data/*
+logs/*
 results/*
-!results/.gitkeep
+
+!*.gitkeep
 
 .DS_Store

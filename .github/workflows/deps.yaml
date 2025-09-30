@@ -1,0 +1,24 @@
+name: Check Python Minimum Version with Vermin
+'on':
+  push:
+    paths:
+      - '**/*.py'
+      - .github/workflows/deps.yaml
+  pull_request:
+    paths:
+      - '**/*.py'
+      - .github/workflows/deps.yaml
+jobs:
+  vermin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - name: Install Vermin
+        run: pip install vermin
+      - name: Run Vermin to check minimum Python version
+        run: vermin .
