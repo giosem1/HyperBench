@@ -39,7 +39,7 @@ jobs:
           git commit -m "Bump version to $VERSION" || echo "No changes to commit"
           git push origin HEAD:main || echo "No changes to push"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       - name: Build
         run: uv build
