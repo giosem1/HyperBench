@@ -2,6 +2,8 @@ import os
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt
+import logging
+
 class Experiment:
     
     def __init__(self, config):
@@ -18,7 +20,11 @@ class Experiment:
                             command = f"uv run pipeline --dataset_name {dataset_name} --hlp_method {hlp_method} --negative_sampling {negative_sampler} --random_seed {self.config['random_seed']} --output_path {self.config['output_path']}"
                         print(f"Running command: {command}")
                         try:
-                            os.system(command)
+                            result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                            if result.returncode != 0:
+                                print(f"Error running command: {command}\n{result.stderr.decode()}")
+                            else:
+                                logging.debug(result.stdout.decode())
                         except Exception as e:
                             print(f"Error running command: {command}")
 
@@ -52,6 +58,7 @@ class Results:
 
 if __name__ == "__main__":
     import argparse
+    import subprocess
 
     parser = argparse.ArgumentParser(description="Run experiments with different HLP methods and negative samplers.")
     parser.add_argument('-n', '--num_trials', type=int, default=1, help='Number of trials to run for each configuration.')
@@ -60,7 +67,20 @@ if __name__ == "__main__":
     parser.add_argument('-neg', '--negative_samplers_list', type=str, nargs='*', default=['MotifHypergraphNegativeSampler', 'CliqueHypergraphNegativeSampler'], help='List of negative sampling methods to evaluate. Default includes MotifHypergraphNegativeSampler and CliqueHypergraphNegativeSampler.')
     parser.add_argument('-o', '--output_path', type=str, default="./results", help='Path to save the output results.')
     parser.add_argument('-r', '--random_seed', type=int, default=None, help='Random seed for reproducibility.')
+    parser.add_argument('-v', '--verbose', default=True, help='Enable verbose output.')
     args = parser.parse_args()
+
+
+    if args.verbose:
+        logging.basicConfig(
+            filename=f"logs/general.log",
+            level=logging.DEBUG,
+            format="%(asctime)s - %(levelname)s - %(message)s")
+    else :
+        logging.basicConfig(
+            filename=f"logs/general.log",
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s")
 
     config = {
         'num_trials': args.num_trials,
@@ -71,16 +91,16 @@ if __name__ == "__main__":
         'random_seed': args.random_seed
     }
 
-    print("Experiment Configuration:")
-    for key, value in config.items():
-        print(f"{key}: {value}")
+    logging.debug(f"Experiment configuration: {config}")
+
     experiment = Experiment(config)
     experiment.run()
 
     results = Results(os.path.join(args.output_path, 'exp.csv'))
     df = results.load_csv()
-    print(df)
+    logging.debug(f"Results DataFrame:\n{df}")
     
     # generate a latex table from the results
     latex_table = results.to_latex(df)
-    print(latex_table)
+    logging.debug(f"LaTeX Table:\n{latex_table}")
+

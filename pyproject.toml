@@ -14,9 +14,12 @@ authors = [
 readme = "README.md"
 dependencies = [
     "gdown>=5.2.0",
+    "numpy>=2.1.0",
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",
     "tensorboard>=2.20.0",
+    "torch>=1.13.0",
+    "torch-geometric>=2.6.1",
 ]
 requires-python = ">=3.9"
 

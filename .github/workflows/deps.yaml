@@ -32,10 +32,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - name: Install pip-tools
-        run: pip install pip-tools
-      - name: Generate minimal requirements
-        run: |
-          pip-compile --generate-hashes --output-file=requirements-minimal.txt requirements.in
-      - name: Display minimal requirements
-        run: cat requirements-minimal.txt
+      
+      - name: Install uv
+        run: pip install uv
+      - name: Install toml
+        run: pip install toml
+      - name: Reinstall each package with minimum version
+        run: 
+          uv pip install --resolution=lowest-direct --force-reinstall . | tee install.log
