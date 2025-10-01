@@ -1,4 +1,5 @@
 import argparse
+
 def execute():
     parser = argparse.ArgumentParser(description="Insert dataset_name, insert negative_sampling method")
     parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
@@ -36,7 +37,6 @@ def execute():
         torch.manual_seed(random_seed)
         np.random.seed(random_seed)
         seed(random_seed)
-    
 
     def sensivity_specifivity_cutoff(y_true, y_score):
         fpr, tpr, thresholds = roc_curve(y_true, y_score)
@@ -78,7 +78,7 @@ def execute():
         batch_size=4000, 
         shuffle=True, 
         drop_last = True
-        )
+    )
 
     class Model(nn.Module):
         
@@ -140,7 +140,7 @@ def execute():
         in_channels = dataset.num_features,
         hidden_channels = 256,
         out_channels= 1
-        ).to(device)
+    )
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     criterion = torch.nn.BCEWithLogitsLoss()
@@ -149,8 +149,8 @@ def execute():
     negative_hypergraph = setNegativeSamplingAlgorithm(negative_method,test_dataset.x.__len__()).generate(test_dataset._data.edge_index)
     edge_index_test = test_dataset._data.edge_index.clone()
     test_dataset.y = torch.vstack((
-        torch.ones((test_dataset._data.edge_index[1].max() + 1, 1), device= test_dataset.x.device),
-        torch.zeros((edge_index_test[1].max() + 1, 1), device= test_dataset.x.device)
+        torch.ones((test_dataset._data.edge_index[1].max() + 1, 1)),
+        torch.zeros((edge_index_test[1].max() + 1, 1))
     ))
 
     test_dataset_ = HyperGraphData(
@@ -165,28 +165,28 @@ def execute():
         model.train()
         optimizer.zero_grad()
         for i, h in tqdm(enumerate(loader), leave = False):
-            h = h.to(device)
+            h = h
             negative_sampler = setNegativeSamplingAlgorithm(negative_method, h.num_nodes)
             negative_test = negative_sampler.generate(h.edge_index)
 
             hlp_method = CommonNeighbors(h.num_nodes)
             hlp_result = hlp_method.generate(negative_test.edge_index)
 
-            y_pos = torch.ones(hlp_result.edge_index.size(1), 1, device=h.x.device)
-            y_neg = torch.zeros(negative_test.edge_index.size(1), 1, device=h.x.device)
+            y_pos = torch.ones(hlp_result.edge_index.size(1), 1)
+            y_neg = torch.zeros(negative_test.edge_index.size(1), 1)
 
             combined_edge_index = torch.hstack([hlp_result.edge_index, negative_test.edge_index])
             combined_y = torch.vstack([y_pos, y_neg])
 
-            pos_edge_attr = torch.ones((hlp_result.edge_index.size(1), h.edge_attr.size(1)), device=h.x.device)
-            neg_edge_attr = torch.zeros((negative_test.edge_index.size(1), h.edge_attr.size(1)), device=h.x.device)
+            pos_edge_attr = torch.ones((hlp_result.edge_index.size(1), h.edge_attr.size(1)))
+            neg_edge_attr = torch.zeros((negative_test.edge_index.size(1), h.edge_attr.size(1)))
             combined_edge_attr = torch.vstack([pos_edge_attr, neg_edge_attr])
 
             h_ = HyperGraphData(
                 x=h.x,
-                edge_index=combined_edge_index.to(device),
+                edge_index=combined_edge_index,
                 edge_attr=combined_edge_attr,
-                y=combined_y.to(device),
+                y=combined_y,
                 num_nodes=h.num_nodes
             )
 
@@ -200,7 +200,7 @@ def execute():
         
         model.eval()
         with torch.no_grad():
-            y_test = model(test_dataset_.x.to(device), test_dataset_.edge_attr.to(device), test_dataset_.edge_index.to(device))
+            y_test = model(test_dataset_.x, test_dataset_.edge_attr, test_dataset_.edge_index)
             y_test = torch.sigmoid(y_test)
             if y_test.size(1) != 1:
                 y_test = y_test[:, 0:1]
@@ -226,7 +226,8 @@ def execute():
     plt.ylabel("True label")
     plt.title("Normalized Confusion Matrix")
     plt.savefig(f"{output_path}/{execution_name}_confusion_matrix.png")
-    # plt.show()
+
+    print(f"Log folder name: {output_path}/{execution_name}")
 
     from pathlib import Path
     import csv

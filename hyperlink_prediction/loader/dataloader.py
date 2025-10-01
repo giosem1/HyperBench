@@ -23,7 +23,7 @@ class DatasetLoader(DataLoader):
     def __init__(self, dataset: DatasetHyperGraph, negative_sampling: str, num_node: int, batch_size: int = 1, shuffle: bool = False, **kwargs):
         kwargs.pop("collate_fn", None)
         
-        hypergraph_negative = setNegativeSamplingAlgorithm(negative_sampling, num_node ).generate(dataset._data.edge_index)
+        hypergraph_negative = setNegativeSamplingAlgorithm(negative_sampling, num_node).generate(dataset._data.edge_index)
         dataset.edge_index = hypergraph_negative.edge_index
 
         super().__init__(

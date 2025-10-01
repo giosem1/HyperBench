@@ -8,10 +8,10 @@ class HypergraphNegativeSampler():
         Args:
             num_node (int): The hypergraph's number of the nodes.
     """
-    def __init__(self, num_node: int):
+    def __init__(self, num_node: int, device: torch.device = torch.device('cpu')):
         self.num_node = num_node
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
+        self.device = device
+
     @abstractmethod
     def fit(self, *args, **kwargs):
         pass
