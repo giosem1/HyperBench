@@ -1,7 +1,7 @@
 import os
 import csv
 import pandas as pd
-
+import matplotlib.pyplot as plt
 class Experiment:
     
     def __init__(self, config):

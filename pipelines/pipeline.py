@@ -66,7 +66,10 @@ def execute():
         case 'COURSERA':
             dataset = COURSERAHypergraphDataset("./data", pre_transform = pre_transform)
 
-    train_dataset, test_dataset, _, _, _, _ = train_test_split(dataset, test_size = 0.2)
+    test_size = 0.2
+    val_size = 0.0
+    train_size = 1 - (test_size + val_size)
+    train_dataset, test_dataset, _, _, _, _ = train_test_split(dataset, test_size = test_size)
 
     loader = DatasetLoader(
         train_dataset, 
@@ -225,8 +228,6 @@ def execute():
     plt.savefig(f"{output_path}/{execution_name}_confusion_matrix.png")
     # plt.show()
 
-    # save this result in a csv file
-    # name,num_exp,hlp_method,negative_sampling,random_seed,train_ratio,val_ratio,test_ratio,auc,aupr,f1,accuracy,precision,recall
     from pathlib import Path
     import csv
     from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
@@ -243,6 +244,6 @@ def execute():
         accuracy = accuracy_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
         precision = precision_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
         recall = recall_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
-        my_writer.writerow([execution_name, hlp_method, negative_method, random_seed, 0.8, 0.0, 0.2, auc, aupr, f1, accuracy, precision, recall])
+        my_writer.writerow([execution_name, hlp_method, negative_method, random_seed, train_size, val_size, test_size, auc, aupr, f1, accuracy, precision, recall])
 
     writer.close()
