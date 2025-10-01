@@ -45,7 +45,8 @@ def execute():
         return thresholds[idx]
 
     now = time.strftime("%Y%m%d-%H%M%S")
-    writer = SummaryWriter(f"./logs/{now}_{dataset_name}")
+    execution_name = f"{now}_{dataset_name}"
+    writer = SummaryWriter(f"./logs/{execution_name}")
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     def pre_transform(data: HyperGraphData):
@@ -221,7 +222,27 @@ def execute():
     plt.xlabel("Predicted label")
     plt.ylabel("True label")
     plt.title("Normalized Confusion Matrix")
-    plt.savefig(f"{output_path}/confusion_matrix.png")
-    plt.show()
+    plt.savefig(f"{output_path}/{execution_name}_confusion_matrix.png")
+    # plt.show()
+
+    # save this result in a csv file
+    # name,num_exp,hlp_method,negative_sampling,random_seed,train_ratio,val_ratio,test_ratio,auc,aupr,f1,accuracy,precision,recall
+    from pathlib import Path
+    import csv
+    from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
+    from sklearn.metrics import average_precision_score
+    result_file = Path(f"{output_path}/exp.csv")
+    file_exists = result_file.is_file()
+    with open(result_file, mode='a', newline='') as file:
+        my_writer = csv.writer(file)
+        if not file_exists:
+            my_writer.writerow(["name", "hlp_method", "negative_sampling", "random_seed", "train_ratio", "val_ratio", "test_ratio", "auc", "aupr", "f1", "accuracy", "precision", "recall"])
+        auc = roc_auc_score(test_dataset_.y.cpu().numpy(), y_test.cpu().numpy())
+        aupr = average_precision_score(test_dataset_.y.cpu().numpy(), y_test.cpu().numpy())
+        f1 = f1_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
+        accuracy = accuracy_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
+        precision = precision_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
+        recall = recall_score(test_dataset_.y.cpu().numpy(), (y_test > cutoff).cpu().numpy())
+        my_writer.writerow([execution_name, hlp_method, negative_method, random_seed, 0.8, 0.0, 0.2, auc, aupr, f1, accuracy, precision, recall])
 
     writer.close()
