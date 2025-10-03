@@ -1,14 +1,14 @@
 import torch
 from torch import Tensor
-from .hyperlink_prediction_base import HypergraphSampler
+from .hyperlink_prediction_base import HyperlinkPredictor
 from .hyperlink_prediction_result import HyperlinkPredictionResult
 
-class CommonNeighbors(HypergraphSampler):
+class CommonNeighbors(HyperlinkPredictor):
 
     def score_CN(self, H, u, v):
         return torch.dot(H[u], H[v]).item()
     
-    def generate(self, edge_index: Tensor):
+    def predict(self, edge_index: Tensor):
         sparse = torch.sparse_coo_tensor(
             edge_index,
             torch.ones(edge_index.shape[1], device=self.device),
