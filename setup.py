@@ -7,7 +7,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'pipeline=pipelines.pipeline:execute',
+            'pipeline=hyperbench.pipelines.pipeline:execute',
         ],
     },
     install_requires=[],

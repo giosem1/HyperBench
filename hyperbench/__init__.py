@@ -1,7 +1,7 @@
-import hyperbench.hyperlink_prediction
-import hyperbench.negative_sampling
-import hyperbench.pipelines
-import hyperbench.utils
+from . import hyperlink_prediction
+from . import negative_sampling
+from . import pipelines
+from . import utils
 
 __all__ = [
     "hyperlink_prediction", 

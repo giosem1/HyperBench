@@ -1,4 +1,4 @@
-from negative_sampling.hypergraph_negative_sampling_algorithm import SizedHypergraphNegativeSampler, MotifHypergraphNegativeSampler, CliqueHypergraphNegativeSampler, HypergraphNegativeSampler
+from ..negative_sampling.hypergraph_negative_sampling_algorithm import SizedHypergraphNegativeSampler, MotifHypergraphNegativeSampler, CliqueHypergraphNegativeSampler, HypergraphNegativeSampler
 
 def setNegativeSamplingAlgorithm(ns_algorithm: str, num_node: int):
     ns_method : HypergraphNegativeSampler

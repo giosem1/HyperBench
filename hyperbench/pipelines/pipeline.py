@@ -21,11 +21,11 @@ def execute():
     import matplotlib.pyplot as plt
     import time
     from random import randint, seed
-    from hyperlink_prediction.loader.dataloader import DatasetLoader
-    from hyperlink_prediction.models.hyperlink_prediction_algorithm import CommonNeighbors
-    from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
-    from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
-    from utils.hyperlink_train_test_split import train_test_split
+    from ..hyperlink_prediction.loader.dataloader import DatasetLoader
+    from ..hyperlink_prediction.models.hyperlink_prediction_algorithm import CommonNeighbors
+    from ..hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
+    from ..utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
+    from ..utils.hyperlink_train_test_split import train_test_split
     from torch_geometric.nn import HypergraphConv
     from tqdm.auto import trange, tqdm
     from torch_geometric.data.hypergraph_data import HyperGraphData

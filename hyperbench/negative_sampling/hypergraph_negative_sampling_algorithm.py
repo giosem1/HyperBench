@@ -2,8 +2,8 @@ import torch
 import torch_geometric.nn.aggr as aggr
 from enum import Enum
 from torch import Tensor
-from negative_sampling.hypergraph_negative_sampling import HypergraphNegativeSampler
-from negative_sampling.hypergraph_negative_sampling_result import HypergraphNegativeSamplerResult, ABSizedHypergraphNegativeSamplerResult
+from .hypergraph_negative_sampling import HypergraphNegativeSampler
+from .hypergraph_negative_sampling_result import HypergraphNegativeSamplerResult, ABSizedHypergraphNegativeSamplerResult
 
 import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
