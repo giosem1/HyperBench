@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from abc import abstractmethod
-from hyperlink_prediction_result import HyperlinkPredictionResult
+from .hyperlink_prediction_result import HyperlinkPredictionResult
 class HyperlinkPredictor():
     
     def __init__(self, num_node: int, device: torch.device = torch.device('cpu')):
@@ -9,7 +9,7 @@ class HyperlinkPredictor():
         self.device = device
 
     @abstractmethod
-    def fit(self, X, y, *args, **kwargs):
+    def fit(self, X, y, edge_index, *args, **kwargs):
         pass
 
     @abstractmethod
