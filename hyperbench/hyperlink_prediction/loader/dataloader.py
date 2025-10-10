@@ -1,7 +1,7 @@
 import torch
 from typing import List, Any
 from torch.utils.data import DataLoader
-from ...utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
+from ...utils.data_and_sampling_selector import setNegativeSamplingAlgorithm
 from ...negative_sampling.hypergraph_negative_sampling_algorithm import HypergraphNegativeSampler, MotifHypergraphNegativeSampler
 from torch_geometric.data.hypergraph_data import HyperGraphData
 from ..datasets.dataset_hypergraph import DatasetHyperGraph

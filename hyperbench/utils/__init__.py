@@ -1,6 +1,7 @@
 from .hyperlink_train_test_split import train_test_split
-from .set_negative_samplig_method import setNegativeSamplingAlgorithm
+from .data_and_sampling_selector import setNegativeSamplingAlgorithm, select_dataset
 __all__ = [
     'train_test_split',
-    'setNegativeSamplingAlgorithm'
+    'setNegativeSamplingAlgorithm',
+    'select_dataset'
 ]

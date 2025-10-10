@@ -119,7 +119,7 @@ class ABSizedHypergraphNegativeSampler(HypergraphNegativeSampler):
             local_edge_index[1] += num_hyperedges
             num_hyperedges = torch.max(local_edge_index[1]) + 1
             negative_edge_index = torch.cat([negative_edge_index , local_edge_index], dim = 1)
-            global_positives = torch.cat([global_positives, probabilities], dim = 0)
+            global_positives = torch.empty((0, probabilities.shape[1]), dtype=torch.float32, device=self.device)
             global_replace_mask = torch.cat([global_replace_mask, replace_mask], dim = 0)
             global_replacement = torch.cat([global_replacement, replacement], dim = 0) 
 
