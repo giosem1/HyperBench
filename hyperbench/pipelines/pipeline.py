@@ -2,7 +2,7 @@ import argparse
 
 def execute():
     parser = argparse.ArgumentParser(description="Insert dataset_name, insert negative_sampling method")
-    parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCURSERA,\nARXIV", required=True)
+    parser.add_argument('--dataset_name', type=str, help="The dataset's name, possible dataset's name: \nIMDB,\nCOURSERA,\nARXIV", required=True)
     parser.add_argument('--negative_sampling', type=str, help="negative sampling method to use, possible methods: \n SizedHypergraphNegativeSampler,\nMotifHypergraphNegativeSampler,\nCliqueHypergraphNegativeSampler", required=True)
     parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbors", required=True)
     parser.add_argument('--output_path', type=str, help="Path to save the results", default="./results")
@@ -21,11 +21,10 @@ def execute():
     import matplotlib.pyplot as plt
     import time
     from random import randint, seed
-    from hyperlink_prediction.loader.dataloader import DatasetLoader
-    from hyperlink_prediction.hyperlink_prediction_algorithm import CommonNeighbors
-    from hyperlink_prediction.datasets.imdb_dataset import CHLPBaseDataset, IMDBHypergraphDataset, ARXIVHypergraphDataset, COURSERAHypergraphDataset
-    from utils.set_negative_samplig_method import setNegativeSamplingAlgorithm
-    from utils.hyperlink_train_test_split import train_test_split
+    from ..hyperlink_prediction.loader.dataloader import DatasetLoader
+    from ..hyperlink_prediction.models.hyperlink_prediction_algorithm import CommonNeighbors
+    from ..utils.data_and_sampling_selector import setNegativeSamplingAlgorithm, select_dataset
+    from ..utils.hyperlink_train_test_split import train_test_split
     from torch_geometric.nn import HypergraphConv
     from tqdm.auto import trange, tqdm
     from torch_geometric.data.hypergraph_data import HyperGraphData
@@ -57,14 +56,7 @@ def execute():
 
         return data
     
-    dataset : CHLPBaseDataset
-    match(dataset_name):
-        case 'IMDB': 
-            dataset = IMDBHypergraphDataset("./data", pre_transform= pre_transform)
-        case 'ARXIV':
-            dataset = ARXIVHypergraphDataset("./data", pre_transform = pre_transform)
-        case 'COURSERA':
-            dataset = COURSERAHypergraphDataset("./data", pre_transform = pre_transform)
+    dataset = select_dataset(dataset_name, pre_transform= pre_transform)
 
     test_size = 0.2
     val_size = 0.0
@@ -170,7 +162,7 @@ def execute():
             negative_test = negative_sampler.generate(h.edge_index)
 
             hlp_method = CommonNeighbors(h.num_nodes)
-            hlp_result = hlp_method.generate(negative_test.edge_index)
+            hlp_result = hlp_method.predict(negative_test.edge_index)
 
             y_pos = torch.ones(hlp_result.edge_index.size(1), 1)
             y_neg = torch.zeros(negative_test.edge_index.size(1), 1)

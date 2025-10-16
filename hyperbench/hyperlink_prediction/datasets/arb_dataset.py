@@ -2,7 +2,7 @@ import gdown
 import tarfile
 import torch
 import torch.nn.functional as F
-from hyperlink_prediction.datasets.dataset_hypergraph import DatasetHyperGraph
+from .dataset_hypergraph import DatasetHyperGraph
 from torch_geometric.data.hypergraph_data import HyperGraphData
 from os import remove, listdir
 
@@ -22,7 +22,7 @@ class ARBDataset(DatasetHyperGraph):
         "tags-math-sx": "1eDevpF6EZs19rLouNpiKGLIlFOLUfKKG",
         "contact-high-school": "1VA2P62awVYgluOIh1W4NZQQgkQCBk-Eu",
         "contact-primary-school": "1sBHSEIyvVKavAho524Ro4cKL66W6rn-t",
-        "NDC-substances": "1dLJt3qzAOYieay03Sp9h8ZfVMiU-nMqC"
+        "NDC-substances": "1mGOg0DMh46J2zQdimSXMde1pKNtfAdh8"
     }
     
 
