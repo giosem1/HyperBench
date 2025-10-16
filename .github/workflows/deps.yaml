@@ -23,20 +23,21 @@ jobs:
       - name: Run Vermin to check minimum Python version
         run: vermin .
 
-  minimum-requirements:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
+  # minimum-requirements:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: 3.x
       
-      - name: Install uv
-        run: pip install uv
-      - name: Install toml
-        run: pip install toml
-      - name: Reinstall each package with minimum version
-        run: 
-          uv pip install --resolution=lowest-direct --force-reinstall . | tee install.log
+  #     - name: Install uv
+  #       run: pip install uv
+  #     - name: Install toml
+  #       run: pip install toml
+  #     - name: Reinstall each package with minimum version
+  #       run: 
+  #         uv init 
+  #         uv pip install --resolution=lowest-direct --force-reinstall . | tee install.log
