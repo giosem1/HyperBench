@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "hypernegative"
+name = "HyperBench"
 version = "0.1.2.7"
 authors = [
     {name = "Giovanni Semioli", email = "g.semioli1@studenti.unisa.it"}
