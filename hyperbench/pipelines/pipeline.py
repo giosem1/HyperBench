@@ -7,12 +7,14 @@ def execute():
     parser.add_argument('--hlp_method', type=str, help="hyperlink prediction method to use, possible method: \nCommonNeighbors", required=True)
     parser.add_argument('--output_path', type=str, help="Path to save the results", default="./results")
     parser.add_argument('--random_seed', type=int, help="Random seed for reproducibility", default=None)
+    parser.add_argument('--test', type=bool, help="If true, runs in test mode", default=False)
     args = parser.parse_args()
     dataset_name= args.dataset_name
     negative_method = args.negative_sampling
     hlp_method = args.hlp_method
     output_path = args.output_path
     random_seed = args.random_seed
+    test = args.test
 
     import torch
     import numpy as np
@@ -53,10 +55,25 @@ def execute():
         unique, inverse = data.edge_index[1].unique(return_inverse = True)
         data.edge_attr = data.edge_attr[unique]
         data.edge_index[1] = inverse
-
         return data
     
     dataset = select_dataset(dataset_name, pre_transform= pre_transform)
+    if test:
+        reduction = min(1000, dataset._data.num_edges)
+        edge_index = dataset._data.edge_index[:, :reduction].clone()
+        edge_attr = dataset._data.edge_attr[:reduction].clone()
+        nodes_present = torch.unique(edge_index[0]).sort()[0]
+        num_nodes = edge_index.max().item() + 1
+        mapping = -torch.ones(num_nodes, dtype=torch.long)
+        mapping[nodes_present] = torch.arange(len(nodes_present))
+        edge_index = mapping[edge_index]
+        test_data = HyperGraphData(
+            x=dataset._data.x[nodes_present].clone(),
+            edge_index=edge_index,
+            edge_attr=edge_attr.clone(),
+            num_nodes=len(nodes_present),
+        )
+        dataset._data = test_data
 
     test_size = 0.2
     val_size = 0.0
@@ -138,7 +155,7 @@ def execute():
     criterion = torch.nn.BCEWithLogitsLoss()
     test_criterion = torch.nn.BCELoss()
 
-    negative_hypergraph = setNegativeSamplingAlgorithm(negative_method,test_dataset.x.__len__()).generate(test_dataset._data.edge_index)
+    negative_hypergraph = setNegativeSamplingAlgorithm(negative_method, test_dataset._data.num_nodes).generate(test_dataset._data.edge_index)
     edge_index_test = test_dataset._data.edge_index.clone()
     test_dataset.y = torch.vstack((
         torch.ones((test_dataset._data.edge_index[1].max() + 1, 1)),
