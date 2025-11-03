@@ -101,8 +101,8 @@ def execute():
             self.activation = nn.LeakyReLU()
             self.in_norm = nn.LayerNorm(in_channels)
             self.in_proj = nn.Linear(in_channels, hidden_channels)
-            self.e_proj = nn.Linear(in_channels, hidden_channels)
-            self.e_norm = nn.LayerNorm(in_channels)
+            self.e_proj = None
+            self.e_norm = None
 
             for i in range(num_layers):
                 setattr(self, f"n_norm_{i}", nn.LayerNorm(hidden_channels))
@@ -125,8 +125,13 @@ def execute():
             x = self.in_proj(x)
             x = self.activation(x)
             x = self.dropout(x)
+            if self.e_norm is None:
+                self.e_norm = nn.LayerNorm(x_e.size(-1)).to(x_e.device)
 
+            x_e = x_e.to(dtype=self.e_norm.weight.dtype, device=self.e_norm.weight.device)
             x_e = self.e_norm(x_e)
+            if self.e_proj is None:
+                self.e_proj = nn.Linear(x_e.size(-1), self.in_proj.out_features).to(x_e.device)
             x_e = self.e_proj(x_e)
             x_e = self.activation(x_e)
             x_e = self.dropout(x_e)
